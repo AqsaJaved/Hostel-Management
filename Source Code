@@ -1,0 +1,1438 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Scanner;
+class Login
+{
+    String nam,pass;
+    int flag=0;
+    Connection con;
+    Statement stmt;
+    public int admin()
+    {
+        try
+        {
+            int f=0;
+            flag=f;
+            InputStreamReader ir=new InputStreamReader(System.in);
+            BufferedReader br=new BufferedReader(ir);
+            String p="",n="";
+            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+            con=DriverManager.getConnection("jdbc:odbc:Mydsn","","");
+            stmt=con.createStatement();      
+       System.out.println("Enter admin id");
+       System.out.println("Enter admin password");
+       nam=br.readLine();
+       pass=br.readLine();
+     ResultSet rs=stmt.executeQuery("Select Admin_name,password from Admin where ID='"+nam+"'");
+       while(rs.next())
+       {
+           n=rs.getString("Admin_name");
+            p=rs.getString("Password");
+       }
+       if(p.equals(pass))
+       {
+           System.out.println("Welcome Admin "+n);
+       }
+       else
+       {
+           flag=1;
+       }
+       }
+        catch(ClassNotFoundException | SQLException | IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        return flag;
+    }
+           public void ne()
+           {
+              try
+              {
+                  InputStreamReader ir=new InputStreamReader(System.in);
+            BufferedReader br=new BufferedReader(ir);
+            String p="",n="";
+            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+            con=DriverManager.getConnection("jdbc:odbc:Mydsn","","");
+            stmt=con.createStatement();      
+       System.out.println("Enter admin id");
+       System.out.println("Enter admin password");
+       nam=br.readLine();
+       pass=br.readLine();
+     ResultSet rs=stmt.executeQuery("Select Admin_name,password from Admin where ID='"+nam+"'");
+       while(rs.next())
+       {
+           n=rs.getString("Admin_name");
+            p=rs.getString("Password");
+       }
+       if(p.equals(pass))
+       {
+               System.out.println("Enter new password");
+               String pa=br.readLine();
+               int a=stmt.executeUpdate("Update Admin set Password='"+pa+"' where ID='"+nam+"'");
+               if(a==1)
+                   System.out.println("Password updated successfully");
+               else
+                  System.out.println("Error in updation"); 
+           }
+       else
+       {
+           System.out.println("Wrong id/password");
+              }
+              }
+             catch(ClassNotFoundException | SQLException | IOException ee)
+             {
+                 System.out.println(ee.getMessage());
+       }
+       
+       }   
+       public void reg()
+    {
+        try
+        {
+            String name;
+       InputStreamReader ir=new InputStreamReader(System.in);
+    BufferedReader br=new BufferedReader(ir);
+Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+con=DriverManager.getConnection("jdbc:odbc:Mydsn","","");
+stmt=con.createStatement();
+ SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+ Date date = new Date();
+ String datestring = dateFormat.format(date);
+ System.out.println("Enter admin name");
+String na=br.readLine();
+char c=Character.toUpperCase(na.charAt(0));
+name="";
+name=name+c;
+int len=na.length();
+for(int k=1;k<len;k++)
+{
+    char ch=Character.toLowerCase(na.charAt(k));
+            name=name+ch;
+}
+System.out.println("Enter admin id");
+String i=br.readLine();
+System.out.println("Enter admin password");
+String p=br.readLine();
+int aa=stmt.executeUpdate("Insert into Admin values('"+i+"','"+name+"','"+p+"','"+datestring+"')");
+if(aa==1)
+System.out.println("Record inserted successfully");
+else
+System.out.println("Error in registration");
+}
+catch(  ClassNotFoundException | SQLException | IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+}
+}
+class Std_login
+{
+    Connection con;
+    Statement stmt;
+    String i;
+    int flag=0;
+public String std(int m)
+{
+     
+try
+        {
+            int f=0;
+            flag=f;
+            String pass;
+            InputStreamReader ir=new InputStreamReader(System.in);
+            BufferedReader br=new BufferedReader(ir);
+            String p="",n="";
+            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+            con=DriverManager.getConnection("jdbc:odbc:Mydsn","","");
+            stmt=con.createStatement();      
+       System.out.println("Enter student id");
+       System.out.println("Enter student password");
+       i=br.readLine();
+       pass=br.readLine();
+      
+     ResultSet rs=stmt.executeQuery("Select name,Password from record where id='"+i+"'");
+       while(rs.next())
+       {
+           n=rs.getString("name");
+            p=rs.getString("Password");
+       }
+       if(p.equals(pass))
+       {
+           if(m==1)
+           {
+           System.out.println("Welcome Student "+n);
+       }
+           if(m==2)
+           {
+               System.out.println("Enter new password");
+               String pa=br.readLine();
+               int a=stmt.executeUpdate("Update record set Password='"+pa+"' where id='"+i+"'");
+               if(a==1)
+                   System.out.println("Password updated successfully");
+               else
+                  System.out.println("Error in updation"); 
+           }
+       }
+       else
+       {
+                      flag=1;
+          System.out.println("Wrong id/password.Try again");
+       }
+       
+       }
+       
+        
+        catch(ClassNotFoundException | SQLException | IOException e)
+        {
+            System.out.println(e.getMessage());
+}
+return i;
+    }
+public void viewsta()
+{
+    try
+    {
+Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+con=DriverManager.getConnection("jdbc:odbc:Mydsn","","");
+stmt=con.createStatement();
+String lg="",ls="",l_st="";
+ResultSet rt=stmt.executeQuery("Select Leave_Status,Leave_Granted,Leave_Seen from Student_Report where id='"+i+"'");
+while(rt.next())
+{
+    l_st=rt.getString("Leave_Status");
+    lg=rt.getString("Leave_Granted");
+    ls=rt.getString("Leave_Seen");
+}
+System.out.println("Leave Submitted: "+l_st);
+System.out.println("Leave Granted: "+lg);
+System.out.println("Leave Seen: "+ls);
+if("Submitted".equalsIgnoreCase(l_st))
+{
+if("No".equalsIgnoreCase(ls))
+{
+    System.out.println("Leave application has been yet been seen by the admin");
+}
+else
+{
+    if("No".equalsIgnoreCase(lg))
+    {
+        System.out.println("Leave application denied");
+    }
+    else
+    {
+        System.out.println("Leave granted");
+    }
+}
+    }
+else
+{
+    System.out.println("Leave application not submitted");
+}
+    }
+    catch(ClassNotFoundException | SQLException ee)
+    {
+        System.out.println(ee.getMessage());
+}
+}
+public void s_leave()
+{
+     try
+    { 
+        
+        Connection cn;
+    PreparedStatement pst;
+        InputStreamReader ir=new InputStreamReader(System.in);
+    BufferedReader br=new BufferedReader(ir);
+    Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+cn=DriverManager.getConnection("jdbc:odbc:Mydsn","","");
+    System.out.println("Enter date from which leave is to be taken and till which date leave is to be taken");
+    String dt1=br.readLine();
+    String dt2=br.readLine();
+    System.out.println("Enter reason for taking leave");
+    String s2=br.readLine();
+    String s3="No";
+    String s4="Submitted";
+pst=cn.prepareStatement("Update Student_Report set Leave_Description=(?),From_date=(?),To_date=(?),Leave_Granted=(?),Leave_Status=(?),Leave_Seen=(?) where id=(?)");
+pst.setString(1,s2);
+pst.setString(2,dt1);
+pst.setString(3,dt2);
+pst.setString(4,s3);
+pst.setString(5,s4);
+pst.setString(6,s3);
+pst.setString(7,i);
+int x=pst.executeUpdate();
+if(x==1)
+    {
+        System.out.println("Leave Application submitted");
+            }
+    else
+    {
+        System.out.println("error in updation");
+    }
+        }
+    catch(ClassNotFoundException | SQLException | IOException e)
+    {
+        System.out.println(e.getMessage());
+    }
+}
+public int f()
+{
+    return flag;
+}
+}
+class Register
+{
+Scanner sc=new Scanner(System.in);
+public String name,fname,phone,address,branch,year,id,ro,type;
+int i;int r=0;
+Connection con;
+Statement stmt;
+public void insert(String sub)
+{
+try
+{
+    InputStreamReader ir=new InputStreamReader(System.in);
+    BufferedReader br=new BufferedReader(ir);
+Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+con=DriverManager.getConnection("jdbc:odbc:Mydsn","","");
+stmt=con.createStatement();
+ SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+ Date date = new Date();
+ String datestring = dateFormat.format(date);
+ System.out.println("Enter Student name");
+String nam=br.readLine();
+char c=Character.toUpperCase(nam.charAt(0));
+name="";
+name=name+c;
+int len=nam.length();
+for(int k=1;k<len;k++)
+{
+    char ch=Character.toLowerCase(nam.charAt(k));
+            name=name+ch;
+}
+System.out.println("Enter student ID");
+id=br.readLine();
+System.out.println("Enter father's name");
+fname=br.readLine();
+System.out.println("Enter phone no.");
+phone=br.readLine();
+System.out.println("Enter Address");
+address=br.readLine();
+System.out.println("Enter Branch");
+branch=br.readLine();
+System.out.println("Enter current year of pursuing graduation ");
+year=br.readLine();
+System.out.println("Enter type of room required(single,double or triple occupancy)");
+ro=br.readLine();
+type="new";
+String pa;
+int flag=0;
+ResultSet rs=stmt.executeQuery("Select * from record where id='"+id+"'");
+while(rs.next())
+{
+   flag=1; 
+}
+if(flag==0)
+{
+if(year.equalsIgnoreCase("1")||year.equalsIgnoreCase("2")||year.equalsIgnoreCase("3")||year.equalsIgnoreCase("4"))
+{
+    if(sub.equals("0"))
+{
+    System.out.println("Enter password");
+pa=br.readLine();
+}
+    else
+    {
+        pa="Null";
+    }
+int a=stmt.executeUpdate("Insert into record values('"+name+"','"+id+"','"+fname+"','"+phone+"','"+address+"','"+branch+"','"+year
++"','"+datestring+"','"+pa+"','"+r+"','"+ro+"','"+type+"')");
+int l=0;
+String s="No";
+String st="Null";
+String ss="Not submitted";
+int aa=stmt.executeUpdate("Insert into Student_Report values('"+l+"','"+name+"','"+s+"','"+id+"','"+st+"','"+st+"','"+st+"','"+s+"','"+ss+"','"+s+"')");
+if(a==1&&aa==1)
+System.out.println("Record inserted successfully");
+else
+System.out.println("Error in registration");
+}
+else
+{
+    System.out.println("Invalid year of pursuing graduation.Try again with an valid year of graduation");
+}
+}
+else
+{
+    System.out.println("ID already exists");
+}
+}
+catch(  ClassNotFoundException | SQLException | IOException ee)
+{
+System.out.println(ee.getMessage());
+}
+}
+public void edit()
+{
+    try
+    {
+        PreparedStatement pst,pst2;
+Connection cn;
+Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+cn=DriverManager.getConnection("jdbc:odbc:Mydsn");
+        int f=0;
+        Statement stm=cn.createStatement();
+InputStreamReader ir=new InputStreamReader(System.in);
+    BufferedReader br=new BufferedReader(ir);
+System.out.println("Enter student name");
+String n=br.readLine();
+String sss="";
+ResultSet rst=stm.executeQuery("Select * from record");
+String arr[]=new String[100];
+int in=0;int h=0;
+while(rst.next())
+{
+    String ss=rst.getString("name");
+    int lengt=ss.length();
+    
+    for(int k=0;k<lengt;k++)
+    {
+        if(ss.charAt(k)==' ')
+        {
+            sss=ss.substring(0,k);
+        arr[in]=ss;
+        in++;
+        
+        }
+    }
+    if((n.equalsIgnoreCase(ss)))
+        f=1;
+       if((n.equalsIgnoreCase(sss)))
+       {
+           f=1;
+           h=1;
+       }
+       sss=n;
+       }
+int ff=0;
+if(f==1)
+{
+System.out.println("Enter new id,fname,phone,branch,address,year");
+id=br.readLine();
+ResultSet rr=stm.executeQuery("Select id from record");
+while(rr.next())
+{
+    String ss=rr.getString("id");
+    
+    if(id.equalsIgnoreCase(ss))
+        ff=1;
+   }
+if(ff==0)
+{
+fname=br.readLine();
+phone=br.readLine();
+branch=br.readLine();
+address=br.readLine();
+year=br.readLine();
+if(year.equalsIgnoreCase("1")||year.equalsIgnoreCase("2")||year.equalsIgnoreCase("3")||year.equalsIgnoreCase("4"))
+{
+pst=cn.prepareStatement("Update record set id=(?),fname=(?),phone=(?),branch=(?),address=(?),year=(?) where name=(?)");
+pst.setString(1,id);
+pst.setString(2,fname);
+pst.setString(3,phone);
+pst.setString(4,branch);
+pst.setString(5,address);
+pst.setString(6,year);
+if(h==1)
+pst.setString(7,sss);
+int x=pst.executeUpdate();
+pst2=cn.prepareStatement("Update Student_Report set id=(?) where name=(?)");
+pst2.setString(1,id);
+pst2.setString(2,sss);
+int x1=pst2.executeUpdate();
+if(x==1&&x1==1)
+{
+System.out.println("Student details updated successfully");
+}
+else
+{
+System.out.println("Error in updation");
+}
+cn.close();
+}
+else
+{
+    System.out.println("Invalid year of pursuing graduation.Try again with an valid year of graduation");
+}
+}
+else
+{
+    System.out.println(" Student id already exists");
+}
+}
+else
+{
+ System.out.println("Student name "+n+" does not exist in student records");   
+}
+}
+catch(ClassNotFoundException | SQLException | IOException ee)
+{
+System.out.println(ee.getMessage());
+}
+}
+public void delete()
+{
+try
+{
+Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+con=DriverManager.getConnection("jdbc:odbc:Mydsn","","");
+stmt=con.createStatement();
+System.out.println("Enter id to delete record");
+id=sc.next();
+int fla=0;
+ResultSet rs=stmt.executeQuery("Select * from record");
+while(rs.next())
+{
+    if(id.equals(rs.getString("id")))
+        fla=1;
+}
+if(fla==1)
+{
+    String tos="";
+ResultSet rr=stmt.executeQuery("Select type_of_stud from record where id='"+id+"'");
+while(rr.next())
+{
+    tos=rr.getString("type_of_stud");
+}
+int a=stmt.executeUpdate("Delete from record where id='"+id+"'");
+int a1=stmt.executeUpdate("Delete from Student_Report where id='"+id+"'");
+int a2=0;
+if("old".equalsIgnoreCase(tos))
+{
+a2=stmt.executeUpdate("Delete from Rooms where id='"+id+"'");
+}
+if(a==1&&a1==1&&a2==1)
+System.out.println("Record deleted sucessfully");
+else
+System.out.println("Error in deletion");
+}
+else
+{
+    System.out.println("Id does not exists");
+}
+}
+catch(  ClassNotFoundException | SQLException ex)
+{
+System.out.println(ex.getMessage());
+}
+}
+public void search(String m)
+{
+try
+{
+Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+con=DriverManager.getConnection("jdbc:odbc:Mydsn","","");
+stmt=con.createStatement();
+if(m.equals("0"))
+{
+System.out.println("Enter student id to search the record");
+id=sc.next();
+}
+else
+{
+    id=m;
+}
+ResultSet rs=stmt.executeQuery("Select name,id,fname,phone,address,branch,year,date_of_registration,Password,Room_No from record where id='"+id+"'");
+String n="",idn="",fn="",ph="",add="",br="",yr="",dt="",p="",rn="";
+while(rs.next())
+{
+   n=rs.getString("name") ;
+   idn=rs.getString("id") ;
+   fn=rs.getString("fname") ;
+   ph=rs.getString("phone") ;
+   add=rs.getString("address") ;
+   br=rs.getString("branch") ;
+   yr=rs.getString("year") ;
+   dt=rs.getString("date_of_registration") ;
+   p=rs.getString("Password");
+   rn=rs.getString("Room_No");
+   
+   }
+if(n.equals(""))
+{
+    System.out.println("Id does not exists");
+}
+else
+{
+System.out.println("Student name: "+n);
+System.out.println("Student id :"+idn);
+System.out.println("Father's Name :"+fn);
+System.out.println("Phone no :"+ph);
+System.out.println("Address :"+add);
+System.out.println("Branch :"+br);
+System.out.println("Current year of pursuing graduation :"+yr);
+System.out.println("Date of registration :"+dt);
+System.out.println("Room No :"+rn);
+if(m.equals("0"))
+{
+        }
+else
+{
+    System.out.println("Password :"+p);
+}
+}
+}
+catch(  ClassNotFoundException | SQLException ex)
+{
+System.out.println(ex.getMessage());
+}
+}
+}
+class mess_record
+{
+public String sname,ph,sitem,quant,sid,payment,price;
+public int i;
+Scanner sc=new Scanner(System.in);
+Statement stmt;
+Connection con; 
+public void insert()
+{
+try
+{
+    InputStreamReader ir=new InputStreamReader(System.in);
+    BufferedReader br=new BufferedReader(ir);
+Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+con=DriverManager.getConnection("jdbc:odbc:Mydsn","","");
+stmt=con.createStatement();
+System.out.println("Enter supplier name");
+sname=br.readLine();
+System.out.println("Enter suppliers id");
+sid=sc.next();
+System.out.println("Enter supplier phone no");
+ph=br.readLine();
+System.out.println("Enter supplied item");
+sitem=br.readLine();
+System.out.println("Enter quantity of goods");
+quant=sc.next();
+int n2=Integer.parseInt(quant);
+System.out.println("Enter price of goods");
+price=sc.next();
+int n3=Integer.parseInt(price);
+System.out.println("Enter payment given");
+payment=sc.next();
+int n4=Integer.parseInt(payment);
+ResultSet rs=stmt.executeQuery("Select * from mess1 where sid='"+sid+"'");
+int flag=0;
+while(rs.next())
+{
+   flag=1; 
+}
+if(flag==0)
+{
+int a=stmt.executeUpdate("Insert into mess1 values('"+sname+"','"+ph+"','"+sitem+"','"+quant+"','"+price+"','"+payment+"','"+sid
++"')");
+int b=n3-n4;
+String bi=String.valueOf(b);
+int a2=stmt.executeUpdate("Insert into Vendor_Report values('"+sname+"','"+sid+"','"+bi+"')");
+if(a==1&&a2==1)
+System.out.println("Record inserted successfully");
+else
+System.out.println("Error in insertion");
+}
+else
+{
+    System.out.println("ID already exists");
+}
+}
+catch(  ClassNotFoundException | SQLException | IOException | NumberFormatException e)
+{
+System.out.println(e.getMessage());
+}
+}
+public void edit()
+{
+
+try
+{
+    InputStreamReader ir=new InputStreamReader(System.in);
+    BufferedReader br=new BufferedReader(ir);
+Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+con=DriverManager.getConnection("jdbc:odbc:Mydsn","","");
+stmt=con.createStatement();
+System.out.println("Enter sid of supplier");
+sid=sc.next();
+int fl=1;
+ResultSet rsm=stmt.executeQuery("Select sid from mess1");
+while(rsm.next())
+{
+    if(sid.equals(rsm.getString("sid")))
+    {
+        fl=0;
+    }
+}
+if(fl==0)
+{
+System.out.println("Enter new values of supplier name,ph,supplied item,quantity,price,payment");
+sname=br.readLine();
+ph=br.readLine();
+sitem=br.readLine();
+quant=sc.next();
+price=sc.next();
+payment=sc.next();
+int a=stmt.executeUpdate("Update mess1 set Vendor_name='"+sname+"',ph='"+ph+"',sitem='"+sitem+"',quant='"+quant+"',price='"+price
++"',payment='"+payment+"'where sid='"+sid+"'");
+int n1=Integer.parseInt(price);
+int n2=Integer.parseInt(payment);
+int bi=n1-n2;
+String bill=String.valueOf(bi);
+int b=stmt.executeUpdate("Update Vendor_Report set Vendor_name='"+sname+"', bill='"+bill+"' where sid='"+sid+"'");
+if(a==1)
+System.out.println("Values updated successfully");
+else
+System.out.println("Error in updation");
+}
+else
+{
+    System.out.println("Id does not exists");
+}
+}
+catch(  ClassNotFoundException | SQLException | IOException | NumberFormatException e)
+{
+System.out.println(e.getMessage());
+}
+}
+public void delete()
+{
+System.out.println("Enter sid of supplier");
+sid=sc.next();
+int fl=1;
+try
+{
+    ResultSet rsm=stmt.executeQuery("Select sid from mess1");
+    while(rsm.next())
+    {
+        if(sid.equals(rsm.getString("sid")))
+        {
+            fl=0;
+        }
+    }
+    if(fl==0)
+    {
+Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+con=DriverManager.getConnection("jdbc:odbc:Mydsn","","");
+stmt=con.createStatement();
+int a=stmt.executeUpdate("Delete from mess1 where sid='"+sid+"'");
+int aa=stmt.executeUpdate("Delete from Vendor_report where sid='"+sid+"'");
+if(a==1&&aa==1)
+System.out.println("Values deleted successfully");
+else
+System.out.println("Error in deletion");
+}
+    else
+    {
+        System.out.println("Supplier id "+sid+" does not exists");
+    }
+}
+catch(  SQLException | ClassNotFoundException e)
+{
+System.out.println(e.getMessage());
+}
+}
+public void search()
+{   
+try
+{   
+Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+con=DriverManager.getConnection("jdbc:odbc:Mydsn","","");
+stmt=con.createStatement();
+System.out.println("Enter id of Vendor");
+sid=sc.next();
+int fl=1;
+ResultSet rsm=stmt.executeQuery("Select sid from mess1");
+    while(rsm.next())
+    {
+        if(sid.equals(rsm.getString("sid")))
+        {
+            fl=0;
+        }
+    }
+    if(fl==0)
+    {
+ResultSet rs=stmt.executeQuery("Select * from mess1 where sid='"+sid+"'");
+String sn="",pay="",pho="",sm="",q="",pri="";
+while(rs.next())
+{
+ sn=rs.getString("Vendor_name");
+  pho=rs.getString("ph");
+ sm=rs.getString("sitem");
+ q=rs.getString("quant");
+ pri=rs.getString("price");
+ pay=rs.getString("payment");
+}
+
+System.out.println("Supplier name= "+sn);
+System.out.println("Phone= "+pho);
+System.out.println("Supplied item= "+sm);
+System.out.println("Quantity supplied= "+q);
+System.out.println("Price= "+pri);
+System.out.println("Payment= "+pay);
+}
+    else
+    {
+        System.out.println("Supplier id "+sid+" does not exists");
+    }
+}
+catch(  ClassNotFoundException | SQLException e)
+{
+System.out.println(e.getMessage());
+}
+}
+}
+ class Report
+{
+         public void calcBill(int n)
+    {
+        try
+{
+Connection con;
+Statement stmt;
+InputStreamReader ir=new InputStreamReader(System.in);
+BufferedReader br=new BufferedReader(ir);
+Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+con=DriverManager.getConnection("jdbc:odbc:Mydsn","","");
+stmt=con.createStatement();
+int fl=1;
+if(n==1)
+{
+System.out.println("Enter name");
+String sname=br.readLine();
+ResultSet rsm=stmt.executeQuery("Select Vendor_name from Vendor_Report");
+    while(rsm.next())
+    {
+        if(sname.equalsIgnoreCase(rsm.getString("Vendor_name")))
+        {
+            fl=0;
+        }
+    }
+    if(fl==0)
+    {
+String bill="";
+ResultSet rs=stmt.executeQuery("Select bill from Vendor_Report where Vendor_name='"+sname+"'");
+while(rs.next())
+{
+        bill=rs.getString("bill");
+}
+    System.out.println("The bill of vendor "+sname+" is "+bill);
+    }
+    else
+    {
+        System.out.println("Vendor name "+sname+" does not exists ");
+    }
+}
+else
+{
+    ResultSet rsm=stmt.executeQuery("Select Vendor_name,bill from Vendor_Report");
+    while(rsm.next())
+{
+    String nam=rsm.getString("Vendor_name");
+    String bill=rsm.getString("bill");
+    if("0".equals(  bill))
+    {
+    System.out.println("Full payment has been made to vendor "+nam);
+   }
+    else
+    {
+        System.out.println("The bill of vendor "+nam+" is Rs "+bill);
+    }
+}
+}
+}
+catch(  ClassNotFoundException | SQLException | IOException ex)
+{
+System.out.println(ex.getMessage());
+}
+} 
+         public void allocate()
+         {
+              try
+   {    
+       InputStreamReader ir=new InputStreamReader(System.in);
+       BufferedReader br=new BufferedReader(ir);
+       Connection con;
+Statement stmt;
+Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+con=DriverManager.getConnection("jdbc:odbc:Mydsn","","");
+stmt=con.createStatement();
+String nn1="new";
+String nn2;
+ResultSet rr=stmt.executeQuery("Select name from record where type_of_stud='"+nn1+"'");
+System.out.println("Following names have been admitted into hostel recently");
+while(rr.next())
+{
+    nn2=rr.getString("name");
+
+System.out.println(nn2);
+}
+System.out.println("Enter 1 to Allocate rooms to newly admitted students");
+int i=Integer.parseInt(br.readLine());
+if(i==1)
+    {
+    System.out.println("Enter name to allocate room");
+    String ss=br.readLine();
+    String se="";
+    ResultSet re=stmt.executeQuery("Select Type_of_Occupancy from record where name='"+ss+"'");
+    while(re.next())
+    {
+        se=re.getString("Type_of_Occupancy");
+        System.out.println("Student "+ss+" desires "+se+" type of occupancy in room");
+         }
+    int to=0;
+    if("triple".equalsIgnoreCase(se))
+    {
+        to=3;
+    }
+    else if("Double".equalsIgnoreCase(se))
+    {
+        to=2;
+    }
+    else
+    {
+        to=1;
+    }
+    System.out.println("The following rooms have "+se+" type of occupancy");
+    String s1,s4,s5;
+    int s2,s3;
+    ResultSet rst=stmt.executeQuery("Select Room_No,No_Of_Occupants,Type_of_occupancy,name,Room_id from Rooms");
+    int no=0;String sw="";
+    while(rst.next())
+    {
+        s4=rst.getString("name");
+        s1=rst.getString("Room_No");
+        s2=rst.getInt("No_Of_Occupants");
+        s3=rst.getInt("Type_of_occupancy");
+        s5=rst.getString("Room_id");
+        if(("Null".equals(s4))&&to==s3)
+        {
+            if(s2<s3)
+            {
+                sw=s5;
+                no=s2;
+             System.out.println("Room no "+s1);
+            }
+    }
+    }
+           ResultSet rstm=stmt.executeQuery("Select id from record where name='"+ss+"'");
+           String idm="";
+           while(rstm.next())
+           {
+               idm=rstm.getString("id");
+           }
+          System.out.println("Enter room no to allot room to student "+ss);
+          String rn=br.readLine();
+          no=no+1;
+          int x=stmt.executeUpdate("Update Rooms set name='"+ss+"',id='"+idm+"' where Room_No='"+rn+"'");
+          int xxx=stmt.executeUpdate("Update Rooms set No_Of_Occupants='"+no+"' where Room_id='"+sw+"'");
+          String sm="old";
+          
+                    int xx=stmt.executeUpdate("Update record set Room_No='"+rn+"',type_of_stud='"+sm+"' where name='"+ss+"'");
+          if(x==1&&xx==1&&xxx==1)
+          {
+              System.out.println("Room nos alloted successfully");
+          }
+          else
+          {
+              System.out.println("Error in Updation");
+          }
+    }
+else
+{
+System.out.println("Invalid choice");
+         }
+   }
+              catch(ClassNotFoundException | SQLException | IOException | NumberFormatException ee)
+              {
+               System.out.println(ee.getMessage()); 
+              }
+         }
+         public void viewl()
+         {
+             try
+             {
+                 Connection con;
+Statement stmt;
+Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+con=DriverManager.getConnection("jdbc:odbc:Mydsn","","");
+stmt=con.createStatement();
+String s1,s2,s3,s4,s5;
+ResultSet res=stmt.executeQuery("Select name,Leave_Description,From_date,To_date,Leave_Granted from Student_Report");
+while(res.next())
+{
+    s1=res.getString("name");
+    s2=res.getString("Leave_Description");
+    s3=res.getString("From_date");
+    s4=res.getString("To_date");
+    s5=res.getString("Leave_Granted");
+    if("Yes".equalsIgnoreCase(s5))
+    {
+        System.out.println("Student "+s1+" has taken leave from date "+s3+" To date "+s4+" On grounds of reason "+s2);
+        System.out.println();
+    }
+}
+         }
+             catch(ClassNotFoundException | SQLException ex)
+             {
+               System.out.println(ex.getMessage());  
+             }
+         }
+    public void viewleave()
+    {
+        String sub="Submitted";
+String g="No";
+        try
+   {    
+Connection con;
+Statement stmt;
+Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+con=DriverManager.getConnection("jdbc:odbc:Mydsn","","");
+stmt=con.createStatement();
+String nn1,nn2,nn3,nn4;
+System.out.println("The students who have submitted leave applications are");
+ResultSet rr=stmt.executeQuery("Select * from Student_Report");
+while(rr.next())
+{
+    nn1=rr.getString("name");
+    nn2=rr.getString("Leave_Granted");
+    nn3=rr.getString("Leave_Status");
+    nn4=rr.getString("Leave_Seen");
+    if("Submitted".equals(nn3))
+    {
+        if(("No".equals(nn2))&&("No".equals(nn4)))
+        {
+          System.out.println(nn1); 
+        }
+    }
+}
+   }
+   catch(ClassNotFoundException | SQLException ex)
+   {
+       System.out.println(ex.getMessage());
+   }
+    }
+    public void leave()
+    {
+        Scanner sc=new Scanner(System.in);
+   try
+   {
+    InputStreamReader ir=new InputStreamReader(System.in);
+    BufferedReader br=new BufferedReader(ir);
+Connection con;
+Statement stmt;
+String ss;
+int fl=1;
+Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+con=DriverManager.getConnection("jdbc:odbc:Mydsn","","");
+stmt=con.createStatement();
+System.out.println("Enter name");
+    String s=br.readLine();
+    ResultSet rsm=stmt.executeQuery("Select name from record");
+    while(rsm.next())
+    {
+        if(s.equalsIgnoreCase(rsm.getString("name")))
+        {
+            fl=0;
+        }
+    }
+    if(fl==0)
+    {
+ResultSet rs=stmt.executeQuery("Select Leave,Leave_Description,From_date,To_date from Student_Report where name='"+s+"'");
+int lt=0;
+String s1="",ss2="",ss1="";
+while(rs.next())
+{
+   lt=rs.getInt("Leave") ;
+   ss1=rs.getString("Leave_Description");
+   s1=rs.getString("From_date");
+   ss2=rs.getString("To_date");
+}
+if(lt>=3)
+{
+System.out.println("Student "+s+" has taken "+lt+" leave till date & is a frequent outstation student");
+}
+else
+{
+    System.out.println("Student "+s+" has taken "+lt+" leave till date");
+}
+System.out.println("Student "+s+" has submitted leave application requesting leave from date "+s1+" to date "+ss2+" on grounds of reason "+ss1);
+System.out.println("Enter 1 to grant leave permission & 2 to deny");
+int cho=sc.nextInt();
+if(cho==1)
+{
+lt=++lt;
+String y="Yes";
+stmt.executeUpdate("Update Student_Report set Leave='"+lt+"',Leave_Granted='"+y+"' where name='"+s+"'");
+System.out.println("Leave Granted from "+s1+" till "+ss2);
+}
+else
+{
+    System.out.println("Leave denied");
+}
+if(lt>=3)
+{
+ss="Yes";
+stmt.executeUpdate("Update Student_Report set Freq_out_std='"+ss+"' where name='"+s+"'");
+}
+}
+   else
+    {
+        System.out.println("Student name "+s+" does not exist in record");
+    }
+ }
+   catch(ClassNotFoundException | SQLException | IOException e)
+   {
+       System.out.println(e.getMessage());
+}
+    }
+    public void viewFreq()
+    {
+         try
+{
+    Connection con;
+Statement stmt;
+Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+con=DriverManager.getConnection("jdbc:odbc:Mydsn","","");
+stmt=con.createStatement();
+String ss="Yes";
+ResultSet rs=stmt.executeQuery("Select name from Student_Report where Freq_out_std='"+ss+"'");
+ResultSetMetaData rsmd=rs.getMetaData();
+int x=rsmd.getColumnCount();
+System.out.println("The frequent outstation students are ");
+while(rs.next())
+{
+int h=1;
+for(int i=1;i<=x;i++)
+{
+System.out.println(h+": "+rs.getString(i));
+}
+++h;
+}
+}
+         catch(ClassNotFoundException | SQLException e)
+         {
+             System.out.println(e.getMessage());
+         }
+ }
+}
+class hostel_management
+{
+public static void main(String args[])
+{
+int z,c=0;
+int c2=0;int cc=0;
+Scanner sc=new Scanner(System.in);
+Register st=new Register();
+Std_login sl=new Std_login();
+Login l=new Login();
+int ch,choice,std,co,ff;
+String g;
+System.out.println();
+System.out.println("--------------------------------------------------------------------------------");
+System.out.println("*************************  HOSTEL MANAGEMENT SYSTEM  ***************************");
+System.out.println("--------------------------------------------------------------------------------");
+do
+{
+    System.out.println("\n1.Student Login\n2.Admin Login\n3.Exit");
+        std=sc.nextInt();
+        if(std==1)
+        {
+          System.out.println("\n1.Enter your credentials as an existing student\n2.Change password\n3.Register as a new student\n4.Exit");  
+          System.out.println("Enter your choice");
+        int e=sc.nextInt();
+           switch(e)
+        {
+            case 1:
+            case 2:
+                String m=sl.std(e);
+      ff=sl.f();
+      if(ff==0)
+      {
+                do
+             {
+                 
+              System.out.println("1.Submit Leave application\t2.View details \t3.View Leave Status\t4.Exit to previous menu\t5.Exit");
+             co=sc.nextInt();
+                if(co==1)
+                {
+                    sl.s_leave();
+                }
+                else if(co==2)
+                        {
+                            st.search(m);
+                        }
+                else if(co==3)
+                {
+                    sl.viewsta();
+                }
+                else if(co==4)
+                {
+                    break;
+                }
+                else if(co==5)
+                {
+                    System.out.println("Goodbye");
+                    System.exit(1);
+                }
+                else
+                {
+                    System.out.println("Invalid choice");
+                }
+             }while(co!=5&&co!=4);
+      }
+                else
+                {
+                  System.out.println();
+                }
+                break;
+            case 3:
+                st.insert("0");
+                break;
+            case 4:
+                System.out.println("Goodbye");
+                System.exit(1);
+                break;
+            default:
+              System.out.println("Invalid choice.Try again"); 
+                break;
+        }
+        }
+        else if(std==2)
+        {
+    do
+{
+    int f;
+    System.out.println("\n1.Enter your credentials as an existing admin\n2.Register as a new admin\n3.Change Password\n4.Exit");
+    System.out.println("Enter your choice");
+choice=sc.nextInt();
+switch(choice)
+{
+    case 1:
+	f=l.admin();
+if(f==0)
+{
+do
+{
+System.out.println();
+System.out.println("1.Student Information \t\t2.Mess information\t\t3.Report\t4.Exit");
+System.out.println("Enter your choice");
+ch=sc.nextInt();
+if(ch==1)
+{
+do
+{
+System.out.println("1.New Registration\n2.Update student details\n3.Delete student details \n4.Search student record\n5.Exit to main menu\n6.Exit");
+System.out.println("Enter your choice");
+z=sc.nextInt();
+switch(z)
+{
+case 1:
+st.insert("1");
+break;
+case 2:
+st.edit();
+break;
+case 3:
+st.delete();
+break;
+case 4:
+st.search("0");
+break;
+case 5:
+break;
+case 6:
+System.out.println("Goodbye");
+System.exit(1);
+break;
+default:
+System.out.println("Invalid input");
+}
+}while(z!=5&&z!=6);
+}
+else if(ch==2)
+{
+int z1;
+mess_record m=new mess_record();
+do
+{
+System.out.println("1.Add new vendor\n2.Edit vendor\n3.Delete vendor\n4.Search vendor by id\n5.Exit to main menu\n6.Exit");
+System.out.println("Enter your choice");
+z1=sc.nextInt();
+switch(z1)
+{
+case 1:
+m.insert();
+break;
+case 2:
+m.edit();
+break;
+case 3:
+m.delete();
+break;
+case 4:
+m.search();
+break;
+case 5:
+break;
+case 6:
+System.out.println("Goodbye");
+System.exit(1);
+break;
+default:
+System.out.println("Invalid input");
+}
+}while(z1!=5&&z1!=6);
+continue;
+}
+else if(ch==3)
+{
+    Report obj=new Report();
+    do
+    {
+    System.out.println("\n1:Vendor Report\n2:Student Report\n3:Exit to main menu\n4:Exit");
+   cc=sc.nextInt();
+   if(cc==1)
+   {
+       do
+       {
+       System.out.println("\n1:View bill of a specific vendor\n2:View bill of all vendors\n3:Exit to Previous Menu\n4:Exit to main menu,\n5:Exit");
+   c2=sc.nextInt();
+   if(c2==1||c2==2)
+   {
+   obj.calcBill(c2);
+   }
+   else if(c2==3)
+           {
+               break;
+           }
+   else if(c2==4)
+           {
+               break;
+           }
+   else if(c2==5)
+   {
+       System.out.println("Goodbye");
+       System.exit(1);
+   }
+   else
+   {
+       System.out.println("Invalid choice");
+   }
+   }while(c2!=3&&c2!=4&&c2!=5);
+   }
+   else if(cc==2)
+   {
+       do
+       {
+ System.out.println("\n1:See new admitted students \n2:See Leave Applications Submitted \n3:Grant leave \n4.View Students On Leave \n5:View frequent outstation student,\n6:Exit to Previous Menu,\n7:Main Menu,\n8:Exit");
+c=sc.nextInt();
+if(c==1)
+{
+    obj.allocate();
+}
+else if(c==2)
+{
+    obj.viewleave();
+}
+else if(c==3)
+{
+    obj.leave();
+}
+else if(c==4)
+{
+    obj.viewl();
+}
+else if(c==5)
+{
+    obj.viewFreq();
+}
+else if(c==6||c==7)
+{
+    break;
+}
+else if(c==8)
+{
+    System.out.println("Goodbye");
+    System.exit(1);
+}
+else
+{
+    System.out.println("Invalid choice");
+}
+}while(c!=5&&c!=6&&c!=7);
+   }
+   else if(cc==3)
+    {
+        break;
+    }
+    
+   else if(cc==4)
+    {
+        System.out.println("Goodbye");
+       System.exit(1);
+    }
+else
+{
+System.out.println("Invalid choice");
+}
+}while(c!=6&&c2!=4&&cc!=3&&cc!=4);
+}
+else if(ch==5)
+{
+    break;
+}
+else if(ch==4)
+{
+    System.out.println("Goodbye");
+    System.exit(1);
+}
+else
+{
+    System.out.println("Invalid choice");
+}
+}while(ch!=4&&cc!=4&&c2!=5&&c!=7);
+}
+else
+{
+    System.out.println("Wrong id/password.Try again");
+}
+        break;
+    case 2:
+        l.reg();
+        break;
+    case 3:
+     l.ne();  
+        break;
+case 4:
+System.out.println("Goodbye");
+    System.exit(1);
+break;
+default:
+    System.out.println("Invalid choice.Try again");
+break;
+} 
+}while(choice!=3);
+}
+        else if(std==3)
+        {
+            System.out.println("Goodbye");
+            System.exit(1);
+        }
+        else
+        {
+            System.out.println("Wrong choice.Try again");
+        }
+}while(std!=3);
+}
+}
